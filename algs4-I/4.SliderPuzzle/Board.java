@@ -1,3 +1,7 @@
+import edu.princeton.cs.algs4.StdOut;
+
+import java.util.Stack;
+
 public class Board {
     private int[][] tiles;
     private int size;
@@ -21,7 +25,7 @@ public class Board {
         result += String.valueOf(size);
         result += "\n";
         for (int i = 0; i < size; i++) {
-            for (int j = o; j < size; j++) {
+            for (int j = 0; j < size; j++) {
                 result += tiles[i][j];
                 result += " ";
             }
@@ -76,7 +80,7 @@ public class Board {
                 }
             }
         }
-        return true
+        return true;
     }
 
     // does this board equal y?
@@ -84,12 +88,13 @@ public class Board {
         if (!(y instanceof Board)) {
             return false;
         }
-        if (y.size != tiles.size) {
+        Board copy = (Board) y;
+        if (copy.size != this.size) {
             return false;
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (tiles[i][j] != y[i][j]) {
+                if (tiles[i][j] != copy.tiles[i][j]) {
                     return false;
                 }
             }
@@ -99,10 +104,10 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        Queue<Board> result = new Queue<Board>();
+        Stack<Board> result = new Stack<Board>();
         int[][] copy = new int[size][size];
-        int x;
-        int y;
+        int x = -1;
+        int y = -1;
         boolean found = false;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -116,16 +121,16 @@ public class Board {
             if (found) break;
         }
         if (x > 0) {
-            result.enqueue(swap(x, y, x - 1, y));
+            result.push(swap(x, y, x - 1, y));
         }
         if (x < size - 1) {
-            result.enqueue(swap(x, y, x + 1, y));
+            result.push(swap(x, y, x + 1, y));
         }
         if (y > 0) {
-            result.enqueue(swap(x, y, x, y - 1));
+            result.push(swap(x, y, x, y - 1));
         }
         if (y < size - 1) {
-            result.enqueue(swap(x, y, x, y + 1));
+            result.push(swap(x, y, x, y + 1));
         }
         return result;
     }
@@ -134,24 +139,25 @@ public class Board {
         int[][] copy = new int[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (i == x0,j = y0){
+                if (i == x0 && j == y0) {
                     copy[i][j] = tiles[x1][y1];
-                }else if (i == x1,j == y1){
+                } else if (i == x1 && j == y1) {
                     copy[i][j] = tiles[x0][y0];
-                }else{
+                } else {
                     copy[i][j] = tiles[i][j];
                 }
             }
         }
-        return new Board(copy);
+        Board result = new Board(copy);
+        return result;
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin() {
         if (tiles[0][0] == 0 || tiles[0][1] == 0) {
-            return new Board(swap(size - 1, 0, size - 1, 1))
+            return swap(size - 1, 0, size - 1, 1);
         } else {
-            return new Board(swap(0, 0, 0, 1))
+            return swap(0, 0, 0, 1);
         }
     }
 
@@ -161,7 +167,7 @@ public class Board {
                 {1, 2, 3},
                 {4, 5, 6},
                 {7, 8, 9}
-        }
+        };
         Board board = new Board(data);
         StdOut.print(board.toString());
     }
