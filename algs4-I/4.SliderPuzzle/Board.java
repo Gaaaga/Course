@@ -46,7 +46,7 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 int goalTile = i * size + j + 1;
                 int actualTile = tiles[i][j];
-                if (!( actualTile == 0)) {
+                if (!(actualTile == 0)) {
                     if (goalTile != actualTile) {
                         result += 1;
                     }
@@ -62,7 +62,7 @@ public class Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 int tile = tiles[i][j];
-                if(tile != 0){
+                if (tile != 0) {
                     int goalX = expectX(tile);
                     int goalY = expectY(tile);
 
@@ -201,17 +201,17 @@ public class Board {
         int[][] data = new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
         Board board = new Board(data);
         StdOut.println(board.toString());
-        StdOut.println(board.hamming()==0);
-        StdOut.println(board.manhattan()==0);
-        StdOut.println(board.isGoal()==true);
+        StdOut.println(board.hamming() == 0);
+        StdOut.println(board.manhattan() == 0);
+        StdOut.println(board.isGoal() == true);
         StdOut.println(board.twin().toString());
         int[][] data2 = new int[][] { { 1, 2, 4 }, { 5, 3, 0 }, { 7, 8, 6 } };
         Board board2 = new Board(data2);
-        StdOut.println(board.equals(board2)==false);
+        StdOut.println(board.equals(board2) == false);
         StdOut.println(board2.hamming() == 4);
         StdOut.println(board2.manhattan() == 7);
         StdOut.println(board2.toString());
-        StdOut.println(board2.isGoal() ==false);
+        StdOut.println(board2.isGoal() == false);
         StdOut.println(board2.twin().toString());
     }
 
