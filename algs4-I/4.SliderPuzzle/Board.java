@@ -46,8 +46,10 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 int goalTile = i * size + j + 1;
                 int actualTile = tiles[i][j];
-                if (goalTile == actualTile) {
-                    result += 1;
+                if (!(actualTile == 0)) {
+                    if (goalTile != actualTile) {
+                        result += 1;
+                    }
                 }
             }
         }
@@ -60,23 +62,55 @@ public class Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 int tile = tiles[i][j];
-                int goalX = tile / size - 1;
-                int goalY = tile % size - 1;
-                int actualX = i;
-                int actualY = j;
-                result += Math.abs(goalX - actualX);
-                result += Math.abs(goalY - actualY);
+                if (tile != 0) {
+                    int goalX = expectX(tile);
+                    int goalY = expectY(tile);
+
+                    int actualX = i;
+                    int actualY = j;
+
+                    result += Math.abs(goalX - actualX);
+                    result += Math.abs(goalY - actualY);
+                }
             }
         }
         return result;
+    }
+
+    private int expectX(int item) {
+        if (item == 0) {
+            return size - 1;
+        }
+        if (item <= size) {
+            return 0;
+        }
+        if (item > (size * size - size)) {
+            return size - 1;
+        }
+        if (item % size == 0) {
+            return item / size - 1;
+        }
+        return item / size;
+    }
+
+    private int expectY(int item) {
+        if (item == 0) {
+            return size - 1;
+        }
+        if (item % size == 0) {
+            return size - 1;
+        }
+        return item % size - 1;
     }
 
     // is this board the goal board?
     public boolean isGoal() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (tiles[i][j] != i * size + j + 1) {
-                    return false;
+                if (i != size - 1 && j != size - 1) {
+                    if (tiles[i][j] != i * size + j + 1) {
+                        return false;
+                    }
                 }
             }
         }
@@ -118,7 +152,8 @@ public class Board {
                     break;
                 }
             }
-            if (found) break;
+            if (found)
+                break;
         }
         if (x > 0) {
             result.push(swap(x, y, x - 1, y));
@@ -163,13 +198,21 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args) {
-        int[][] data = new int[][]{
-                {1, 2, 3},
-                {4, 5, 6},
-                {7, 8, 9}
-        };
+        int[][] data = new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 0 } };
         Board board = new Board(data);
-        StdOut.print(board.toString());
+        StdOut.println(board.toString());
+        StdOut.println(board.hamming() == 0);
+        StdOut.println(board.manhattan() == 0);
+        StdOut.println(board.isGoal() == true);
+        StdOut.println(board.twin().toString());
+        int[][] data2 = new int[][] { { 1, 2, 4 }, { 5, 3, 0 }, { 7, 8, 6 } };
+        Board board2 = new Board(data2);
+        StdOut.println(board.equals(board2) == false);
+        StdOut.println(board2.hamming() == 4);
+        StdOut.println(board2.manhattan() == 7);
+        StdOut.println(board2.toString());
+        StdOut.println(board2.isGoal() == false);
+        StdOut.println(board2.twin().toString());
     }
 
 }
