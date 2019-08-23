@@ -12,7 +12,7 @@ public class Board {
         size = tiles.length;
         int[][] newTiles = new int[size][size];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < tiles[i].length - 1; j++) {
+            for (int j = 0; j < tiles[i].length; j++) {
                 newTiles[i][j] = tiles[i][j];
             }
         }
